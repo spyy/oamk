@@ -1,0 +1,2 @@
+# oamk
+oamk harjoituksia
