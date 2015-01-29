@@ -12,7 +12,6 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.shape.Line;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import java.util.List;
 
 public class Main extends Application {
     Group root;
@@ -84,11 +83,11 @@ public class Main extends Application {
         this.startingText = new Text(50, 320, "Aloita painamalla nuolinäppäintä");
         this.startingText.setId("aloitusteksti");
 
-        Line line = new Line();
-        line.setStartX(100.0f);
-        line.setStartY(340.0f);
-        line.setEndX(120.0f);
-        line.setEndY(340.0f);
+        LineNode line = new LineNode(100.0f, 340.0f, 120.0f, 340.0f, KeyCode.RIGHT);
+        //line.setStartX(100.0f);
+        //line.setStartY(340.0f);
+        //line.setEndX(120.0f);
+        //line.setEndY(340.0f);
         //line.setFill(Color.SILVER);
         line.setStroke(Color.SILVER);
        
