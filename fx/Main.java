@@ -27,31 +27,10 @@ public class Main extends Application {
         }
         
         ObservableList<Node> nodes = this.root.getChildren();
-        Line latestLine = (Line)nodes.get(nodes.size() - 1);
+        DirectionLine latestLine = (DirectionLine)nodes.get(nodes.size() - 1);
         System.out.println(latestLine.toString());
-        
-        Double startX = latestLine.getStartX();
-        Double startY = latestLine.getStartY();
-        Double endX = latestLine.getEndX();
-        Double endY = latestLine.getEndY();
-        
-        switch (event.getCode()) {
-            case DOWN:
-                startX = endX + 1;
-                startY = endY;
-                endX = startX;
-                endY = endY + 19;
-                System.out.println("DOWN event ");
-                break;
-            default:
-                break;                
-        }
-        
-        Line line = new Line();
-        line.setStartX(startX);
-        line.setStartY(startY);
-        line.setEndX(endX);
-        line.setEndY(endY);
+            
+        DirectionLine line = new DirectionLine(latestLine, event.getCode());
         line.setStroke(Color.SILVER);
         
         this.root.getChildren().add(line);
@@ -83,12 +62,7 @@ public class Main extends Application {
         this.startingText = new Text(50, 320, "Aloita painamalla nuolinäppäintä");
         this.startingText.setId("aloitusteksti");
 
-        LineNode line = new LineNode(100.0f, 340.0f, 120.0f, 340.0f, KeyCode.RIGHT);
-        //line.setStartX(100.0f);
-        //line.setStartY(340.0f);
-        //line.setEndX(120.0f);
-        //line.setEndY(340.0f);
-        //line.setFill(Color.SILVER);
+        DirectionLine line = new DirectionLine(100.0f, 340.0f, 120.0f, 340.0f, KeyCode.RIGHT);
         line.setStroke(Color.SILVER);
        
         this.root.getChildren().add(this.startingText);
