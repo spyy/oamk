@@ -5,11 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
-import javafx.scene.text.Font;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.InputEvent;
-import javafx.scene.shape.Line;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
@@ -68,7 +65,7 @@ public class Main extends Application {
         this.root.getChildren().add(this.startingText);
         this.root.getChildren().add(line);
 
-        stage.setTitle("Terminator");
+        stage.setTitle("Manuaalinen ruutukone");
         stage.setScene(scene);
         stage.show();
    }
