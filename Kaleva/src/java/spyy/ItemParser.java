@@ -12,10 +12,10 @@ import org.xml.sax.*;
 class ItemParser extends DefaultHandler {
     boolean inItem;
     PrintWriter out;
-    String title = "";
-    String description = "";
-    String link = ""; 
-    String qName = "";
+    String title;
+    String description;
+    String link; 
+    String qName;
     
         
     @Override
@@ -62,6 +62,11 @@ class ItemParser extends DefaultHandler {
 
             this.inItem = false;
             this.out = out;
+            this.qName = "";
+            this.description = "";
+            this.link = "";
+            this.title = "";
+            
             parser.parse(stream, this);
         }
         catch (Exception e) {
