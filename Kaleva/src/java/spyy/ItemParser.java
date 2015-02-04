@@ -12,21 +12,31 @@ import org.xml.sax.*;
 class ItemParser extends DefaultHandler {
     boolean inItem;
     PrintWriter out;
+    String title = "";
+    String description = "";
+    String link = ""; 
+    String qName = "";
+    
         
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         String value = new String(ch, start, length);
-        this.out.println("Value: " + value);        
+        
+        if (this.qName.equals("title")) {
+            this.title = value;
+        }
+        else if (this.qName.equals("description")) {
+            this.description = value;
+        }
+        else if (this.qName.equals("link")) {
+            this.link = value;
+        }
     }
     
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException {
         if (this.inItem) {
-            //System.out.println("uri: " + uri);
-            //System.out.println("localName: " + localName);
-            //System.out.println("qName: " + qName);
-            //System.out.println("attributes: " + Integer.toString(attrs.getLength()));
-            this.out.println("localName: " + localName);            
+            this.qName = qName;            
         }
         if (localName.equals("item")) {
             this.inItem = true;
@@ -37,6 +47,10 @@ class ItemParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {        
         if (localName.equals("item")) {
             this.inItem = false;
+            this.out.println("<dl>");
+            this.out.println("<dt><a href='" + this.link + "'>" + this.title + "</a></dt>");
+            this.out.println("<dd>" + this.description  + "</dd>");
+            this.out.println("</dl>");
         }
     }
     
@@ -52,8 +66,6 @@ class ItemParser extends DefaultHandler {
         }
         catch (Exception e) {
             throw new IOException(e);
-        }
-                
-    } 
-    
+        }                
+    }     
 }
