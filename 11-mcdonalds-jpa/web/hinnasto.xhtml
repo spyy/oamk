@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>McDonaldsin Hinnasto</title>
+        <script src="js/libs/jquery/jquery.js"/>
+        <script>
+            $(function () {
+                $("tr").css({"background-color":"#fee"});
+            });
+        </script>
+    </h:head>
+    <h:body>
+        <h1>McDonalds: Hinnasto</h1>
+        
+        <table>
+            <c:forEach var="tr" items="#{hinnasto}">
+                <tr><td colspan="3"><strong>${tr.nimi}</strong></td></tr>
+                <c:forEach var="t" items="#{tr.tuotteet}">
+                    <tr>
+                        <td>${t.nimi}</td>
+                        <td>${t.annoskoko}</td>
+                        <td>${t.hinta}</td>
+                    </tr>
+                </c:forEach>
+            </c:forEach>
+        </table>
+        
+    </h:body>
+</html>
+

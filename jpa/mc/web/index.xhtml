@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>McDonalds: Hinnasto</title>
+    </h:head>
+    <h:body>
+        <h1>McDonalds: Hinnasto</h1>
+        
+        <h2>Hinnaston vienti</h2>
+        
+        <h:form enctype="multipart/form-data">
+            <h:inputFile value="#{hinnastonLuoja.tiedosto}"/>
+            <h:commandButton value="Vie" 
+                             action="#{hinnastonLuoja.vie}"/>
+        </h:form>
+        
+        <h2>Hinnasto</h2>
+        
+        <div><h:link outcome="hinnasto">Näytä hinnasto</h:link></div>
+    </h:body>
+</html>
+
