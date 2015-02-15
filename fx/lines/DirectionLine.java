@@ -1,3 +1,5 @@
+package lines;
+
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Line;
@@ -14,6 +16,14 @@ class DirectionLine extends Line {
       super();
       this.direction = keyCode;
       this.setDirection(line);
+   }
+   public DirectionLine(LineEntity entity) {
+        super();
+        this.direction = entity.getKeyCode();
+        this.setStartX(entity.getStartX());
+        this.setStartY(entity.getStartY());
+        this.setEndX(entity.getEndX());
+        this.setEndY(entity.getEndY());
    }
    private void setDirection(DirectionLine line) {
        switch (this.direction) {
