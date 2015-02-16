@@ -35,14 +35,7 @@ public class Main extends Application {
         }
     }
     
-    private void arrowPressed(KeyEvent event) {        
-        if (this.notStarted) {
-            this.notStarted = false;
-            this.root.getChildren().remove(this.startingText);
-            this.initLines();
-            System.out.println("Ruutukone starttasi");
-        }
-        
+    private void arrowPressed(KeyEvent event) {                
         DirectionLine line;
         ObservableList<Node> nodes = this.root.getChildren();
         
@@ -79,7 +72,14 @@ public class Main extends Application {
         this.root.getChildren().add(line);
     }
     
-    private void keyPressed(KeyEvent event) {                
+    private void keyPressed(KeyEvent event) {
+        if (this.notStarted) {
+            this.notStarted = false;
+            this.root.getChildren().remove(this.startingText);
+            this.initLines();
+            System.out.println("Ruutukone starttasi");
+        }
+        
         switch (event.getCode()) {
             case DOWN:
             case UP:
