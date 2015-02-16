@@ -71,6 +71,10 @@ public class Main extends Application {
                 break;                
         }
         
+        if (this.em.getTransaction().isActive() == false) {
+            this.em.getTransaction().begin();
+        }
+        
         this.insertEntity(line);        
         this.root.getChildren().add(line);
     }
@@ -86,17 +90,14 @@ public class Main extends Application {
             default:
                 break;                
         }
-        
-        if (this.em.getTransaction().isActive()) {
-            this.em.getTransaction().commit();
-        }
-        
-        this.em.getTransaction().begin();
+                                
         event.consume();
     }
     
     private void keyReleased(KeyEvent event) {                
-        this.em.getTransaction().commit();
+        if (this.em.getTransaction().isActive()) {
+            this.em.getTransaction().commit();
+        }
         event.consume();
     }
     
