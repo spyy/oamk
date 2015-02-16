@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -26,14 +25,11 @@ public class Main extends Application {
     
     private void initLines() {        
         List<LineEntity> entities = this.getEntities();
-        if (entities.isEmpty()) {
-            DirectionLine line = new DirectionLine(100.0f, 340.0f, 120.0f, 340.0f, KeyCode.RIGHT);
-            line.setStroke(Color.SILVER);        
-            this.root.getChildren().add(line);
+        if (entities == null || entities.isEmpty()) {
+            System.out.println("ihka eka startti");
         } else {
             for (LineEntity e: entities) {
-                DirectionLine line = new DirectionLine(e);
-                line.setStroke(Color.SILVER);        
+                DirectionLine line = new DirectionLine(e); 
                 this.root.getChildren().add(line);
             }
         }
@@ -47,14 +43,35 @@ public class Main extends Application {
             System.out.println("Ruutukone starttasi");
         }
         
+        DirectionLine line;
         ObservableList<Node> nodes = this.root.getChildren();
-        DirectionLine latestLine = (DirectionLine)nodes.get(nodes.size() - 1);
-            
-        DirectionLine line = new DirectionLine(latestLine, event.getCode());
-        line.setStroke(Color.SILVER);
+        
+        if (nodes.isEmpty()) {
+            line = new DirectionLine(100.0f, 340.0f);            
+        } else {
+            DirectionLine latestLine = (DirectionLine)nodes.get(nodes.size() - 1);
+            line = new DirectionLine(latestLine);
+        }        
+        
+        switch (event.getCode()) {
+            case DOWN:
+                line.goDown();
+                break;
+            case UP:
+                line.goUp();
+                break;
+            case LEFT:
+                line.goLeft();
+                break;
+            case RIGHT:
+                line.goRight();
+                break;
+            default:
+                System.out.println("meni pieleen");
+                break;                
+        }
         
         this.insertEntity(line);        
-        
         this.root.getChildren().add(line);
     }
     
@@ -70,39 +87,57 @@ public class Main extends Application {
                 break;                
         }
         
+        if (this.em.getTransaction().isActive()) {
+            this.em.getTransaction().commit();
+        }
+        
+        this.em.getTransaction().begin();
         event.consume();
     }
     
-    public void insertEntity(DirectionLine line) {
+    private void keyReleased(KeyEvent event) {                
+        this.em.getTransaction().commit();
+        event.consume();
+    }
+    
+    private void insertEntity(DirectionLine line) {
         LineEntity entity = new LineEntity();
-        entity.setKeyCode(line.direction);
         entity.setStartX(line.getStartX());
         entity.setStartY(line.getStartY());
         entity.setEndX(line.getEndX());
         entity.setEndY(line.getEndY());
-    
-        this.em.getTransaction().begin();
-        this.em.persist(entity);
-        this.em.getTransaction().commit();
+        entity.setNextX(line.getEndX());
+        entity.setNextY(line.getEndY());
+            
+        this.em.persist(entity);        
     }
     
     public List getEntities() {
-        Query query = this.em.createQuery("SELECT e FROM LineEntity e");
-        return query.getResultList();
+        List resultList = null;
+        
+        try {
+            Query query = this.em.createQuery("SELECT e FROM LineEntity e");
+            resultList = query.getResultList();
+        } catch(IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        
+        return resultList;
     }
  
    @Override
    public void start(Stage stage) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JavaFXProject2PU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("LinesPU");
         this.em = emf.createEntityManager();
         
         this.root = new Group();
        
         this.scene = new Scene(root, 500, 700, Color.BLACK);
-        this.scene.getStylesheets().add("tyylit.txt");       
+        this.scene.getStylesheets().add("/lines/tyylit.css");       
         this.scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> keyPressed(event) );
+        this.scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> keyReleased(event) );
 
-        this.startingText = new Text(50, 320, "Aloita painamalla nuolinäppäintä");
+        this.startingText = new Text(50, 320, "Käytä nuolinäppäimiä");
         this.startingText.setId("aloitusteksti");
         
         this.root.getChildren().add(this.startingText);
